@@ -1,14 +1,6 @@
 {
   "version": "0.2.0",
   "configurations": [
-    
-    {
-      "type": "java",
-      "name": "App",
-      "request": "launch",
-      "mainClass": "App",
-      "projectName": "Capstone Project_6cef6284"
-    },
     {
       "type": "java",
       "name": "Run JavaFX App",

@@ -22,7 +22,7 @@ public class App extends Application{
         
     }
 
-     private void createGridImage(int cellSize) {
+     private WritableImage createGridImage(int cellSize) {
          //Drawing Grid
         GraphicsContext graphics = canvas.getGraphicsContext2D();
         graphics.setFill(Color.valueOf("BLACK"));
@@ -46,7 +46,7 @@ public class App extends Application{
             }
         }
         surface = new Surface(surfaceBlocks);
-        canvas.snapshot(null, img);
+        return canvas.snapshot(null, null);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class App extends Application{
         graphics.setFill(Color.valueOf("WHITE"));
         graphics.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
 
-        createGridImage( 50);
+        img = createGridImage( 50);
 
         AnimationTimer anime = new AnimationTimer() {
             @Override
@@ -77,5 +77,9 @@ public class App extends Application{
         stage.setScene(scene);
         stage.show();
         anime.start(); // Start the animation timer
+        for(int i=0;i<surface.getPopulation().length;i++){
+            surface.getPopulation()[i].start();
+        };
+
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.paint.*;
 public class Surface{
     Bacteria bact = new Bacteria(3,4);
     Bacteria bact2 = new Bacteria(8, 9);
+    Bacteria[] population = {bact,bact2};
     private static SurfaceBlock[][] surfaceBlocks;
     private static ArrayList<SurfaceBlock> list = new ArrayList<>();
     
@@ -51,5 +52,9 @@ public class Surface{
         catch(ArrayIndexOutOfBoundsException e){
             return null;
         }
+    }
+
+    public Bacteria[] getPopulation(){
+        return population;
     }
 }
