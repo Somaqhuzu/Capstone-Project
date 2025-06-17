@@ -1,11 +1,19 @@
 {
   "version": "0.2.0",
   "configurations": [
+    
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "App",
+      "projectName": "Capstone Project_6cef6284"
+    },
     {
       "type": "java",
       "name": "Run JavaFX App",
       "request": "launch",
-      "mainClass": "Surface",
+      "mainClass": "App",
       "vmArgs": "--module-path /home/skhoma/javafx-sdk-24.0.1/lib --add-modules javafx.controls"
     }
   ]

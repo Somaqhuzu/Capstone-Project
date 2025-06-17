@@ -4,6 +4,9 @@ import java.util.concurrent.ThreadLocalRandom;
 //import energy.Energy;
 //import energy.OrganicMatter;
 
+import environment.Surface;
+import environment.SurfaceBlock;
+
 public class Bacteria extends Thread{
     private int[] position;
     private int[] prevPosition;
@@ -43,12 +46,22 @@ public class Bacteria extends Thread{
             }
             // Update position logic here
             // For example, move randomly within bounds of the surface
-            prevPosition[0] = position[0];
-            prevPosition[1] = position[1];
+            prevPosition = position;
             //Random Walks
             //Still to implement metropolisStep
             position[0] += Math.signum(ThreadLocalRandom.current().nextInt(3) - 1); // Move left, right, or stay
             position[1] += Math.signum(ThreadLocalRandom.current().nextInt(3) - 1); // Move up, down, or stay
+
+            SurfaceBlock site = Surface.getSurface(position);
+            if(site.acquireBlock()){
+                Surface.getSurface(prevPosition).setOccupied(false); // Leave the previously occupied block
+                if(site.getNutrient()==1){
+                    site.setNutrient(0);
+                }
+            }
+            else{
+                position = prevPosition; //If new position is occupied, return to the previous position
+            }
         }
     }
 }

@@ -53,4 +53,8 @@ public SurfaceBlock(int x, int y,int nutrient){
     public int getNutrient(){
         return organicNutrient;
     }
+
+    public void setNutrient(int i){
+        organicNutrient = i;
+    }
 }
