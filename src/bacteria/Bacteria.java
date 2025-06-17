@@ -1,14 +1,19 @@
 package bacteria;
 
 import java.util.concurrent.ThreadLocalRandom;
+//import energy.Energy;
+//import energy.OrganicMatter;
 
 public class Bacteria extends Thread{
     private int[] position;
     private int[] prevPosition;
 
+    //private Energy nutritious = new OrganicMatter(); // Removed or comment out since Energy is undefined
+    //private Energy hamiltonian = new Hamiltonian
     public Bacteria(int x, int y){
         this.position = new int[]{x, y};
         this.prevPosition = new int[]{0, 0};
+        
     }
  
     public int getPosX(){
