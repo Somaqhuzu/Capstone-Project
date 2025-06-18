@@ -3,6 +3,10 @@ package energy;
 //else if quantity < 0, then it is an organic toxin
 public class OrganicMatter implements Energy{
     double quantity;
+
+    public OrganicMatter(int amount){
+        this.quantity = amount;
+    }
     @Override
     public double getEnergy() {
        return quantity;

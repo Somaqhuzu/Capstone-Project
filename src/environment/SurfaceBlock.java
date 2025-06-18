@@ -4,39 +4,35 @@ package environment;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import energy.Energy;
+import energy.OrganicMatter;
+
 //vector description
 public class SurfaceBlock{
-//private int humid;//0 - 100 %
 private int temperature; //in kelvin
-private int organicNutrient; //Food
-//private int organicToxins; //Excreation etc et
+private Energy nutrients; //Nutrients
+private float epsDensity = 0.0f;
+
 
 private int[] position; //Position in the vector(2D) for now
 private AtomicBoolean occupancy = new AtomicBoolean(false); //To check if the block is occupied by a bacteria
 
+
 public SurfaceBlock(int x, int y,int nutrient){
     this.position = new int[]{x, y};
-    //this.humid = 0; //Default value
-    this.temperature = (int) Math.random(); //Default value in Kelvin
-    this.organicNutrient = nutrient; //Default value
-    //this.organicToxins = 0; //Default value
+    this.temperature = (int) Math.random() * 100; 
+    this.nutrients = new OrganicMatter(nutrient); 
     }
 
     public SurfaceBlock(int x, int y){
     this.position = new int[]{x, y};
-    //this.humid = 0; //Default value
     this.temperature = (int) Math.random(); //Default value in Kelvin
-    this.organicNutrient = 0; //Default value
-    //this.organicToxins = 0; //Default value
+    this.nutrients = new OrganicMatter(0);
     }
 
     
     public int[] getPosition(){
         return position;
-    }
-
-    public boolean isOccupied(){
-        return occupancy.get();
     }
 
     public void setOccupied(boolean occupied){
@@ -50,11 +46,22 @@ public SurfaceBlock(int x, int y,int nutrient){
         return temperature;
     }
 
-    public int getNutrient(){
-        return organicNutrient;
+    public double getNutrient(){
+        return nutrients.getEnergy();
     }
 
-    public void setNutrient(int i){
-        organicNutrient = i;
+    public void resetNutrients(){
+        nutrients.addEnergy(-nutrients.getEnergy());
     }
+
+    public void addEPSDensity(float density){
+        if(epsDensity < 1.0f)
+            this.epsDensity += density;
+    }
+
+    public float getEPSDensity(){
+        return epsDensity;
+    }
+    
+
 }

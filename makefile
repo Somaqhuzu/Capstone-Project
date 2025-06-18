@@ -8,9 +8,13 @@ BINDIR=bin
 SRCDIR=src
 
 CLASSES=\
-	Bacteria.class\
-    Surface.class\
-    SurfaceBlock.class\
+	bacteria/movement/MetropolisStep.class\
+	bacteria/Bacteria.class\
+	environment/SurfaceBlock.class\
+    environment/Surface.class\
+    App.class\
+	App$1.class\
+
 
 
 CLASS_FILES=$(CLASSES:%.class=$(BINDIR)/%.class)
@@ -23,7 +27,7 @@ $(BINDIR)/%.class: $(SRCDIR)/%.java
 	$(JAVAC) $(JFLAGS) -d $(BINDIR) $<
 
 run: default
-	$(JAVA) $(JFLAGS) -cp $(BINDIR) Surface
+	$(JAVA) $(JFLAGS) -cp $(BINDIR) App 10 300 100 10 
 
 clean:
 	rm -r $(BINDIR)/*.class

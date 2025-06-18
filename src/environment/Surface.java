@@ -9,33 +9,40 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.*;
 
+
 public class Surface{
-    Bacteria bact = new Bacteria(3,4);
-    Bacteria bact2 = new Bacteria(8, 9);
-    Bacteria[] population = {bact,bact2};
+    private static ArrayList<Bacteria> population = new ArrayList<>();
     private static SurfaceBlock[][] surfaceBlocks;
     private static ArrayList<SurfaceBlock> list = new ArrayList<>();
-    
-    public Surface(SurfaceBlock[][] blocks){
-        Surface.surfaceBlocks = blocks;
-    }
+    private static ArrayList<int[]> epsNodes = new ArrayList<>();
+    public static volatile boolean started = false;
 
     public void repaint(WritableImage img,Canvas canvas){
         GraphicsContext graphics = canvas.getGraphicsContext2D();
-         //Fill oval in the middle of the grid
-        graphics.setFill(Color.valueOf("RED"));
         Platform.runLater(()->{
             graphics.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
             graphics.setFill(Color.valueOf("BLACK"));
             graphics.drawImage(img, 0, 0);
-            graphics.setFill(Color.valueOf("GREEN"));
-            for(int i =0;i<list.size();i++){
-                int[] pos = list.get(i).getPosition();
-                graphics.fillOval(canvas.getWidth()/50 + pos[0]*50,canvas.getHeight()/50 + pos[1]*50,10,10);
+            
+            graphics.setFill(Color.valueOf("BLUE"));
+            for(int i=0;i<population.size();i++){
+                int[] position = population.get(i).get2DPosition();
+                graphics.fillOval( 3 + position[0] * 10 , 1 + position[1] * 10 , 7, 7);
             }
-            graphics.setFill(Color.valueOf("RED"));
-            graphics.fillOval(canvas.getWidth()/50 + bact.getPosX() * 50 , canvas.getHeight()/50 + bact.getPosY() * 50, 25, 25);
-            graphics.fillOval(canvas.getWidth()/50 + bact2.getPosX() * 50 , canvas.getHeight()/50 + bact2.getPosY() * 50, 25, 25);
+
+            for(int i =0;i<list.size();i++){
+                if(list.get(i).getNutrient()==1) graphics.setFill(Color.valueOf("GREEN"));
+                else graphics.setFill(Color.valueOf("RED"));
+                int[] pos = list.get(i).getPosition();
+                graphics.fillOval(2 + pos[0] * 10,2 + 10 * pos[1],3,3);
+            }
+           
+            // graphics.setFill(Color.rgb(40, 150, 70, 0.3));
+            // for(int i = 0; i < epsNodes.size();i++){
+            //     int[] pos = epsNodes.get(i);
+            //     graphics.fillOval(canvas.getWidth() + pos[0],canvas.getHeight() + pos[1],300,150);
+                
+            // }
         });
         list.removeIf((e)->{
             return e.getNutrient()== 0;
@@ -47,6 +54,10 @@ public class Surface{
         return list;
     }
 
+    public static ArrayList<int[]> epsNodePositions(){
+        return epsNodes;
+    }
+
     public static SurfaceBlock getSurface(int[] position){
         try{return surfaceBlocks[position[0]][position[1]];}
         catch(ArrayIndexOutOfBoundsException e){
@@ -54,7 +65,15 @@ public class Surface{
         }
     }
 
-    public Bacteria[] getPopulation(){
+    public static ArrayList<Bacteria> getPopulation(){
         return population;
+    }
+
+    public static void addBacteria(Bacteria b){
+        population.add(b);
+    }
+
+    public static void setSurfaceBlocks(SurfaceBlock[][] surfaceBlocks2) {
+       surfaceBlocks = surfaceBlocks2;
     }
 }

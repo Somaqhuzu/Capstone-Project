@@ -6,6 +6,7 @@
       "name": "Run JavaFX App",
       "request": "launch",
       "mainClass": "App",
+      "args": "15 300 100 10",
       "vmArgs": "--module-path /home/skhoma/javafx-sdk-24.0.1/lib --add-modules javafx.controls"
     }
   ]
