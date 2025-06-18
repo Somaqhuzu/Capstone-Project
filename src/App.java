@@ -55,7 +55,8 @@ public class App extends Application{
             }
         }
         
-        surface = new Surface(surfaceBlocks,population);
+        surface = new Surface();
+        Surface.setSurfaceBlocks(surfaceBlocks);
         return canvas.snapshot(null, null);
     }
 
@@ -85,11 +86,16 @@ public class App extends Application{
         container.getChildren().add(canvas); 
         Scene scene = new Scene (container, 1280, 600);
         stage.setScene(scene);
-        stage.show();
-        anime.start(); // Start the animation timer
-        for(int i=0;i<surface.getPopulation().length;i++){
-            surface.getPopulation()[i].start();
+        for(int i=0;i<population;i++){
+            Surface.getPopulation().add(new bacteria.Bacteria(i, ThreadLocalRandom.current().nextInt(15), ThreadLocalRandom.current().nextInt(13)));
         };
 
+        stage.show();
+
+        java.util.ArrayList<bacteria.Bacteria> list = Surface.getPopulation();
+        for(int i=0;i<list.size();i++){
+            list.get(i).start(); // Start each bacteria thread
+        }
+        anime.start(); // Start the animation timer
     }
 }

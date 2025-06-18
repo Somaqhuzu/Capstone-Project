@@ -1,7 +1,7 @@
 package environment;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 import bacteria.Bacteria;
 import javafx.application.Platform;
@@ -12,18 +12,11 @@ import javafx.scene.paint.*;
 
 
 public class Surface{
-    Bacteria[] population;
+    private static ArrayList<Bacteria> population = new ArrayList<>();
     private static SurfaceBlock[][] surfaceBlocks;
     private static ArrayList<SurfaceBlock> list = new ArrayList<>();
     private static ArrayList<int[]> epsNodes = new ArrayList<>();
     
-    public Surface(SurfaceBlock[][] blocks,int population){
-        Surface.surfaceBlocks = blocks;
-        this.population = new Bacteria[population];
-        for(int i=0;i<population;i++){
-            this.population[i] = new Bacteria(i,(int)ThreadLocalRandom.current().nextInt(20),(int)ThreadLocalRandom.current().nextInt(13));
-        }
-    }
 
     public void repaint(WritableImage img,Canvas canvas){
         GraphicsContext graphics = canvas.getGraphicsContext2D();
@@ -33,10 +26,9 @@ public class Surface{
             graphics.drawImage(img, 0, 0);
             
             graphics.setFill(Color.valueOf("YELLOW"));
-            for(int i=0;i<population.length;i++){
-                int[] position = population[i].get2DPosition();
+            for(int i=0;i<population.size();i++){
+                int[] position = population.get(i).get2DPosition();
                 graphics.fillOval(canvas.getWidth()/50 + position[0]* 50 , canvas.getHeight()/50 + position[1] * 50, 25, 25);
-                System.out.println(population[i]);
             }
 
             for(int i =0;i<list.size();i++){
@@ -74,7 +66,15 @@ public class Surface{
         }
     }
 
-    public Bacteria[] getPopulation(){
+    public static ArrayList<Bacteria> getPopulation(){
         return population;
+    }
+
+    public static void addBacteria(Bacteria b){
+        population.add(b);
+    }
+
+    public static void setSurfaceBlocks(SurfaceBlock[][] surfaceBlocks2) {
+       surfaceBlocks = surfaceBlocks2;
     }
 }
