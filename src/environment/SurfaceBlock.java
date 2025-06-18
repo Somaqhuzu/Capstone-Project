@@ -2,14 +2,17 @@ package environment;
 //Building Block of a wall surface
 //Element of a vector
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import energy.Energy;
 import energy.OrganicMatter;
 
+
 //vector description
 public class SurfaceBlock{
-private int temperature; //in kelvin
+private double temperature; //in kelvin
+private double humidity; //in percentage 
 private Energy nutrients; //Nutrients
 private float epsDensity = 0.0f;
 
@@ -18,15 +21,18 @@ private int[] position; //Position in the vector(2D) for now
 private AtomicBoolean occupancy = new AtomicBoolean(false); //To check if the block is occupied by a bacteria
 
 
+
 public SurfaceBlock(int x, int y,int nutrient){
     this.position = new int[]{x, y};
-    this.temperature = (int) Math.random() * 100; 
+    this.temperature =  ThreadLocalRandom.current().nextDouble(373); 
+    this.humidity = Math.random(); //Default value in percentage
     this.nutrients = new OrganicMatter(nutrient); 
     }
 
     public SurfaceBlock(int x, int y){
     this.position = new int[]{x, y};
     this.temperature = (int) Math.random(); //Default value in Kelvin
+    this.nutrients = new OrganicMatter(0);
     this.nutrients = new OrganicMatter(0);
     }
 
@@ -38,12 +44,24 @@ public SurfaceBlock(int x, int y,int nutrient){
     public void setOccupied(boolean occupied){
         occupancy.set(occupied);
     }
-    public boolean acquireBlock(){
+    public synchronized boolean acquireBlock(){
         return occupancy.compareAndSet(false, true);
     }
 
-    public int getTemperature(){
+    public double getTemperature(){
         return temperature;
+    }
+
+    public double getHumidity(){
+        return humidity;
+    }
+
+    public void setTemperature(int temperature){
+        this.temperature = temperature;
+    }
+
+    public void setHumidity(int humidity){
+        this.humidity = humidity;
     }
 
     public double getNutrient(){

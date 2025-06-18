@@ -10,30 +10,33 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.*;
 
 
+
 public class Surface{
     private static ArrayList<Bacteria> population = new ArrayList<>();
     private static SurfaceBlock[][] surfaceBlocks;
-    private static ArrayList<SurfaceBlock> list = new ArrayList<>();
+    private static ArrayList<SurfaceBlock> organic = new ArrayList<>();
     private static ArrayList<int[]> epsNodes = new ArrayList<>();
+    public static SurfaceFacade facade = SurfaceFacade.NULL;
     public static volatile boolean started = false;
+    public static int cellSize; //Size of each cell in the grid
+    public static int Population;
 
-    public void repaint(WritableImage img,Canvas canvas){
+    public static void repaint(WritableImage img,Canvas canvas){
         GraphicsContext graphics = canvas.getGraphicsContext2D();
         Platform.runLater(()->{
             graphics.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-            graphics.setFill(Color.valueOf("BLACK"));
             graphics.drawImage(img, 0, 0);
             
             graphics.setFill(Color.valueOf("BLUE"));
             for(int i=0;i<population.size();i++){
                 int[] position = population.get(i).get2DPosition();
-                graphics.fillOval( 3 + position[0] * 10 , 1 + position[1] * 10 , 7, 7);
+                graphics.fillOval( 3 + position[0] * Surface.cellSize , 1 + position[1] * 10 , 7, 7);
             }
 
-            for(int i =0;i<list.size();i++){
-                if(list.get(i).getNutrient()==1) graphics.setFill(Color.valueOf("GREEN"));
+            for(int i =0;i<organic.size();i++){
+                if(organic.get(i).getNutrient()==1) graphics.setFill(Color.valueOf("GREEN"));
                 else graphics.setFill(Color.valueOf("RED"));
-                int[] pos = list.get(i).getPosition();
+                int[] pos = organic.get(i).getPosition();
                 graphics.fillOval(2 + pos[0] * 10,2 + 10 * pos[1],3,3);
             }
            
@@ -44,14 +47,14 @@ public class Surface{
                 
             // }
         });
-        list.removeIf((e)->{
+        organic.removeIf((e)->{
             return e.getNutrient()== 0;
 
         });
     }
 
     public static ArrayList<SurfaceBlock> getNutritiousBlocks(){
-        return list;
+        return organic;
     }
 
     public static ArrayList<int[]> epsNodePositions(){
@@ -76,4 +79,5 @@ public class Surface{
     public static void setSurfaceBlocks(SurfaceBlock[][] surfaceBlocks2) {
        surfaceBlocks = surfaceBlocks2;
     }
+
 }
