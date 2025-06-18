@@ -1,5 +1,4 @@
 import java.util.concurrent.ThreadLocalRandom;
-
 import environment.Surface;
 import environment.SurfaceBlock;
 import javafx.animation.AnimationTimer;
@@ -16,10 +15,12 @@ public class App extends Application{
     private Canvas canvas;
     private WritableImage img;
     private Surface surface;
+    private static int population;
     
     public static void main(String[] args){
+        population = Integer.parseInt(args[0]);
         launch(args);
-        
+           
     }
 
      private WritableImage createGridImage(int cellSize) {
@@ -33,7 +34,10 @@ public class App extends Application{
 
             graphics.strokeLine(i,0,i,canvas.getHeight());
             for(int j = 0;j<canvas.getHeight(); j = j + cellSize){
-
+                if(j ==0){
+                    graphics.setFill(Color.valueOf("BROWN"));
+                    graphics.fillRect(i,j,cellSize,cellSize);
+                }
                 graphics.strokeLine(0,j,canvas.getWidth(),j);
                 int rand = ThreadLocalRandom.current().nextInt(3) - 1;
                 if (rand==1){
@@ -41,11 +45,17 @@ public class App extends Application{
                     surfaceBlocks[i/cellSize][j/cellSize] = e;
                     Surface.getNutritiousBlocks().add(e);
                 }
+                else if(rand==0){
+                    SurfaceBlock e = new SurfaceBlock(i/cellSize, j/cellSize,-1);
+                    surfaceBlocks[i/cellSize][j/cellSize] = e;
+                    Surface.getNutritiousBlocks().add(e);
+                }
                 else
                     surfaceBlocks[i/cellSize][j/cellSize] = new SurfaceBlock(i/cellSize, j/cellSize);
             }
         }
-        surface = new Surface(surfaceBlocks);
+        
+        surface = new Surface(surfaceBlocks,population);
         return canvas.snapshot(null, null);
     }
 
